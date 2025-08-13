@@ -16,6 +16,7 @@ function ProductCard({ product, onProductDeleteClick }: PropsType) {
             <Link to={`/products/${product.id}`} className="mt-2 w-full aspect-square overflow-hidden">
                 <img className="w-full h-full object-cover" src={product.imageUrl} alt="Product image" />
             </Link>
+            <p className="mt-2">Count: {product.count}</p>
             <p className="mt-2">Width: {product.size.width}</p>
             <p className="mt-2">Height: {product.size.height}</p>
             <p className="mt-2">Weight: {product.weight}</p>

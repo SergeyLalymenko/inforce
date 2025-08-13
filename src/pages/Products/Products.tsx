@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState, AppDispatch } from '@/store';
 import { fetchProducts, createProduct, deleteProduct } from '@/store/productsSlice';
@@ -8,6 +8,7 @@ import Button from '@/UI/Button.tsx';
 import Modal from '@/components/Modal';
 import ConfirmModal from '@/components/ConfirmModal';
 import InputField from '@/UI/InputField';
+import type { ProductType } from '@/services/productsService.ts';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -40,16 +41,46 @@ const addProductSchema = z.object({
 
 type AddProductFormDataType = z.infer<typeof addProductSchema>;
 
+type SortByType = 'name' | 'count';
+
+type SortConfigType = {
+    by: SortByType;
+    direction: 'asc' | 'desc';
+};
+
 function Products() {
     const dispatch = useDispatch<AppDispatch>();
     const { products, isLoading, isLoadingError } = useSelector((state: RootState) => state.products);
 
+    const [sortConfig] = useState<SortConfigType>({
+        by: 'name',
+        direction: 'asc',
+    });
     const [isOpenAddProductModal, setIsOpenAddProductModal] = useState<boolean>(false);
     const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
 
     const { control, handleSubmit, reset } = useForm<AddProductFormDataType>({
         resolver: zodResolver(addProductSchema),
     });
+
+    const sortedProducts: ProductType[] = useMemo(() => {
+        const { by, direction } = sortConfig;
+        let productsBy: ProductType[] = [];
+        switch (by) {
+            case 'name':
+                {
+                    productsBy = [...products].sort((a, b) => a.name.localeCompare(b.name));
+                }
+                break;
+            case 'count':
+                {
+                    productsBy = [...products].sort((a, b) => a.count - b.count);
+                }
+                break;
+        }
+        if (direction === 'desc') return productsBy.reverse();
+        return productsBy;
+    }, [products, sortConfig]);
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -95,8 +126,8 @@ function Products() {
                         </div>
                         <h1 className="text-xl mt-2">Products:</h1>
                         <div className="mt-2 grid grid-cols-4 gap-4">
-                            {products.length ? (
-                                products.map((product) => (
+                            {sortedProducts.length ? (
+                                sortedProducts.map((product) => (
                                     <ProductCard
                                         product={product}
                                         onProductDeleteClick={onProductDeleteClick}
