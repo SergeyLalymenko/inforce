@@ -1,0 +1,42 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "imageUrl": "https://idmarketing.com.ua/wp-content/uploads/2023/10/prodmark.jpg",
+      "name": "Product 1",
+      "count": 4,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "200g",
+      "comments": [
+        {
+          "id": "1",
+          "productId": "1",
+          "description": "Comment description",
+          "date": "14:00 22.08.2021"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "imageUrl": "https://cakeshop.com.ua/images/AcpSe7kFpmzMfgJUwhyXbNbja_gwkleunua5ZVM9jTQ/h:5000/bG9jYWw/6Ly8vY2FrZXNob3AuY29tLnVhL3B1YmxpY19odG1sL3N0b3JhZ2UvYXBwL3B1YmxpYy9pbWcvcHJvZHVjdC81NzEzXzEuanBn",
+      "name": "Product 2",
+      "count": 1,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "300g",
+      "comments": [
+        {
+          "id": "2",
+          "productId": "2",
+          "description": "Comment description 2",
+          "date": "16:00 22.08.2021"
+        }
+      ]
+    }
+  ]
+}
